@@ -29,7 +29,6 @@ export default function TodosPage({ token }) {
         }
 
         const data = await response.json();
-
         setTodoList(data.tasks);
       } catch (error) {
         setError(error.message);
@@ -73,17 +72,15 @@ export default function TodosPage({ token }) {
       const savedTodo = await response.json();
       const realTodo = savedTodo.task || savedTodo;
 
-setTodoList((previous) =>
-  previous.map((todo) =>
-    todo.id === temporaryTodo.id ? realTodo : todo
-  )
-);
-
+      setTodoList((previous) =>
+        previous.map((todo) =>
+          todo.id === temporaryTodo.id ? realTodo : todo
+        )
+      );
     } catch (error) {
       setTodoList((previous) =>
         previous.filter((todo) => todo.id !== temporaryTodo.id)
       );
-
       setError(error.message);
     }
   }
@@ -93,9 +90,7 @@ setTodoList((previous) =>
 
     setTodoList((previous) =>
       previous.map((todo) =>
-        todo.id === id
-          ? { ...todo, isCompleted: true }
-          : todo
+        todo.id === id ? { ...todo, isCompleted: true } : todo
       )
     );
 
@@ -108,34 +103,29 @@ setTodoList((previous) =>
         },
         credentials: 'include',
         body: JSON.stringify({
+          title: originalTodo.title,
           isCompleted: true,
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to complete todo');
+        const errorData = await response.json();
+        throw new Error(errorData?.message || 'Failed to complete todo');
       }
     } catch (error) {
       setTodoList((previous) =>
-        previous.map((todo) =>
-          todo.id === id ? originalTodo : todo
-        )
+        previous.map((todo) => (todo.id === id ? originalTodo : todo))
       );
-
       setError(error.message);
     }
   }
 
   async function updateTodo(editedTodo) {
-    const originalTodo = todoList.find(
-      (todo) => todo.id === editedTodo.id
-    );
+    const originalTodo = todoList.find((todo) => todo.id === editedTodo.id);
 
     setTodoList((previous) =>
       previous.map((todo) =>
-        todo.id === editedTodo.id
-          ? editedTodo
-          : todo
+        todo.id === editedTodo.id ? editedTodo : todo
       )
     );
 
@@ -159,12 +149,9 @@ setTodoList((previous) =>
     } catch (error) {
       setTodoList((previous) =>
         previous.map((todo) =>
-          todo.id === editedTodo.id
-            ? originalTodo
-            : todo
+          todo.id === editedTodo.id ? originalTodo : todo
         )
       );
-
       setError(error.message);
     }
   }
@@ -174,10 +161,7 @@ setTodoList((previous) =>
       {error && (
         <div>
           <p>{error}</p>
-
-          <button onClick={() => setError('')}>
-            Clear Error
-          </button>
+          <button onClick={() => setError('')}>Clear Error</button>
         </div>
       )}
 
