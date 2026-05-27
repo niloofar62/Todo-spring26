@@ -1,9 +1,12 @@
 import TodoListItem from './TodoListItem.jsx';
 
 function TodoList({ todoList, onCompleteTodo, onUpdateTodo }) {
+  // const filteredTodoList = todoList.filter(
+  //   (todo) => !todo.isCompleted
+  // );
   const filteredTodoList = todoList.filter(
-    (todo) => !todo.isCompleted
-  );
+  (todo) => todo && !todo.isCompleted
+);
 
   return filteredTodoList.length === 0 ? (
     <p>Add todo above to get started</p>
