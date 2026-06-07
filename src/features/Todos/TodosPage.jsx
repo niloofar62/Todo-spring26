@@ -520,7 +520,7 @@
 // }
 
 
-  import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import SortBy from '../../shared/SortBy.jsx';
 import FilterInput from '../../shared/FilterInput.jsx';
 import useDebounce from '../../utils/useDebounce.js';
@@ -541,8 +541,9 @@ export default function TodosPage({ token }) {
   const debouncedFilterTerm = useDebounce(filterTerm, 300);
 
   const invalidateCache = useCallback(() => {
-    setDataVersion((previous) => previous + 1);
-  }, []);
+  console.log('Invalidating memo cache after todo mutation');
+  setDataVersion((previous) => previous + 1);
+}, []);
 
   function handleFilterChange(newTerm) {
     setFilterTerm(newTerm);
@@ -677,6 +678,8 @@ export default function TodosPage({ token }) {
         body: JSON.stringify({
           title: originalTodo.title,
           isCompleted: true,
+          createdAt: originalTodo.createdAt,
+          
         }),
       });
 
@@ -720,6 +723,7 @@ export default function TodosPage({ token }) {
         body: JSON.stringify({
           title: editedTodo.title,
           isCompleted: editedTodo.isCompleted,
+          createdAt: originalTodo.createdAt,
         }),
       });
 
