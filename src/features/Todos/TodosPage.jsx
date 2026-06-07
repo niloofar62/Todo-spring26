@@ -541,7 +541,7 @@ export default function TodosPage({ token }) {
   const debouncedFilterTerm = useDebounce(filterTerm, 300);
 
   const invalidateCache = useCallback(() => {
-  console.log('Invalidating memo cache after todo mutation');
+  // console.log('Invalidating memo cache after todo mutation');
   setDataVersion((previous) => previous + 1);
 }, []);
 
@@ -678,6 +678,7 @@ export default function TodosPage({ token }) {
         body: JSON.stringify({
           title: originalTodo.title,
           isCompleted: true,
+          // when i delete the createdAt the patch works well
           createdAt: originalTodo.createdAt,
           
         }),
@@ -723,6 +724,7 @@ export default function TodosPage({ token }) {
         body: JSON.stringify({
           title: editedTodo.title,
           isCompleted: editedTodo.isCompleted,
+          // when i delete createdAt patch works good
           createdAt: originalTodo.createdAt,
         }),
       });
