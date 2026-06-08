@@ -526,13 +526,16 @@ import FilterInput from '../../shared/FilterInput.jsx';
 import useDebounce from '../../utils/useDebounce.js';
 import TodoForm from './TodoForm.jsx';
 import TodoList from './TodoList/TodoList.jsx';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 import {
   todoReducer,
   initialTodoState,
   TODO_ACTIONS,
 } from '../../reducers/todoReducer.js';
 
-export default function TodosPage({ token }) {
+export default function TodosPage() {
+  const { token } = useAuth();
+
   const [state, dispatch] = useReducer(
     todoReducer,
     initialTodoState

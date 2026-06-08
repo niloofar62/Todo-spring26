@@ -1,6 +1,9 @@
 import { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext.jsx';
 
-export default function Logon({ onSetEmail, onSetToken }) {
+export default function Logon() {
+  const { login } = useAuth();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
@@ -8,24 +11,15 @@ export default function Logon({ onSetEmail, onSetToken }) {
 
   async function handleSubmit(event) {
     event.preventDefault();
+
     setAuthError('');
     setIsLoggingOn(true);
 
     try {
-      const response = await fetch('/api/users/logon', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ email, password }),
-      });
+      const result = await login(email, password);
 
-      const data = await response.json();
-
-      if (response.status === 200 && data.name && data.csrfToken) {
-        onSetEmail(data.name);
-        onSetToken(data.csrfToken);
-      } else {
-        setAuthError(`Authentication failed: ${data?.message}`);
+      if (!result.success) {
+        setAuthError(result.error);
       }
     } catch (error) {
       setAuthError(`Error: ${error.name} | ${error.message}`);
@@ -43,6 +37,7 @@ export default function Logon({ onSetEmail, onSetToken }) {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email</label>
+
           <input
             id="email"
             type="email"
@@ -54,6 +49,7 @@ export default function Logon({ onSetEmail, onSetToken }) {
 
         <div>
           <label htmlFor="password">Password</label>
+
           <input
             id="password"
             type="password"
