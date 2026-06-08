@@ -49,19 +49,35 @@ export function AuthProvider({ children }) {
     }
   }
 
-  async function logout() {
-    try {
-      setEmail('');
-      setToken('');
+ async function logout() {
+  try {
+    const response = await fetch('/user/logoff', {
+      method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': token,
+      },
+      credentials: 'include',
+    });
 
-      return { success: true };
-    } catch (error) {
-      return {
-        success: false,
-        error: `Error: ${error.name} | ${error.message}`,
-      };
-    }
+    const data = await response.json();
+
+    setEmail('');
+    setToken('');
+
+    return {
+      success: response.ok,
+      data,
+    };
+  } catch (error) {
+    setEmail('');
+    setToken('');
+
+    return {
+      success: false,
+      error: `Error: ${error.name} | ${error.message}`,
+    };
   }
+}
 
   const value = {
     email,
