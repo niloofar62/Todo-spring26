@@ -1,4 +1,4 @@
-import { useAuth } from '../contexts/AuthContext.jsx';
+import { useAuth } from "../contexts/useAuth";
 
 export default function Header() {
   const { email } = useAuth();

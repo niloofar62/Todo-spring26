@@ -526,7 +526,8 @@ import FilterInput from '../../shared/FilterInput.jsx';
 import useDebounce from '../../utils/useDebounce.js';
 import TodoForm from './TodoForm.jsx';
 import TodoList from './TodoList/TodoList.jsx';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import { useAuth } from '../../contexts/useAuth.js';
+
 import {
   todoReducer,
   initialTodoState,
@@ -712,7 +713,7 @@ export default function TodosPage() {
         body: JSON.stringify({
           title: originalTodo.title,
           isCompleted: true,
-          createdAt: originalTodo.createdAt,
+          // createdAt: originalTodo.createdAt,
         }),
       });
 
@@ -771,7 +772,7 @@ export default function TodosPage() {
         body: JSON.stringify({
           title: editedTodo.title,
           isCompleted: editedTodo.isCompleted,
-          createdAt: originalTodo.createdAt,
+          // createdAt: originalTodo.createdAt,
         }),
       });
 
