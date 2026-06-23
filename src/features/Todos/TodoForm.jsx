@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
-import TextInputWithLabel from "../../shared/TextInputWithLabel.jsx";
-import { isValidTodoTitle } from "../../utils/todoValidation.js";
+import DOMPurify from 'dompurify';
+import TextInputWithLabel from '../../shared/TextInputWithLabel.jsx';
+import { isValidTodoTitle } from '../../utils/todoValidation.js';
 
 function TodoForm({ onAddTodo }) {
   const [workingTodoTitle, setWorkingTodoTitle] = useState('');
@@ -9,8 +10,15 @@ function TodoForm({ onAddTodo }) {
   const handleAddTodo = (event) => {
     event.preventDefault();
 
-    if (workingTodoTitle.trim()) {
-      onAddTodo(workingTodoTitle);
+    const trimmedTitle = workingTodoTitle.trim();
+
+    if (isValidTodoTitle(trimmedTitle)) {
+      const sanitizedTitle = DOMPurify.sanitize(trimmedTitle, {
+        ALLOWED_TAGS: [],
+        ALLOWED_ATTR: [],
+      });
+
+      onAddTodo(sanitizedTitle);
       setWorkingTodoTitle('');
       inputRef.current.focus();
     }
@@ -24,6 +32,7 @@ function TodoForm({ onAddTodo }) {
         ref={inputRef}
         value={workingTodoTitle}
         onChange={(event) => setWorkingTodoTitle(event.target.value)}
+        maxLength={100}
       />
 
       <button

@@ -169,8 +169,6 @@ export function todoReducer(state, action) {
       };
 
     case TODO_ACTIONS.INVALIDATE_CACHE:
-      console.log("Invalidating memo cache after todo mutation");
-
       return {
         ...state,
         dataVersion: state.dataVersion + 1,
