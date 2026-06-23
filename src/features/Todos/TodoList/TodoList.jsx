@@ -1,18 +1,52 @@
+import { useMemo } from 'react';
 import TodoListItem from './TodoListItem.jsx';
 
-function TodoList({ todoList, onCompleteTodo, onUpdateTodo }) {
-  // const filteredTodoList = todoList.filter(
-  //   (todo) => !todo.isCompleted
-  // );
-  const filteredTodoList = todoList.filter(
-  (todo) => todo && !todo.isCompleted
-);
+function TodoList({
+  todoList,
+  onCompleteTodo,
+  onUpdateTodo,
+  dataVersion,
+  statusFilter = 'all',
+}) {
+  const filteredTodoList = useMemo(() => {
+    let filteredTodos;
 
-  return filteredTodoList.length === 0 ? (
-    <p>Add todo above to get started</p>
+    switch (statusFilter) {
+      case 'completed':
+        filteredTodos = todoList.filter((todo) => todo && todo.isCompleted);
+        break;
+      case 'active':
+        filteredTodos = todoList.filter((todo) => todo && !todo.isCompleted);
+        break;
+      case 'all':
+      default:
+        filteredTodos = todoList.filter((todo) => todo);
+        break;
+    }
+
+    return {
+      version: dataVersion,
+      todos: filteredTodos,
+    };
+  }, [todoList, dataVersion, statusFilter]);
+
+  function getEmptyMessage() {
+    switch (statusFilter) {
+      case 'completed':
+        return 'No completed todos yet.';
+      case 'active':
+        return 'No active todos. Add a todo above to get started.';
+      case 'all':
+      default:
+        return 'Add todo above to get started.';
+    }
+  }
+
+  return filteredTodoList.todos.length === 0 ? (
+    <p>{getEmptyMessage()}</p>
   ) : (
     <ul>
-      {filteredTodoList.map((todo) => (
+      {filteredTodoList.todos.map((todo) => (
         <TodoListItem
           key={todo.id}
           todo={todo}
