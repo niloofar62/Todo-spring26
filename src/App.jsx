@@ -35,13 +35,16 @@ import NotFoundPage from './pages/NotFoundPage.jsx';
 
 function App() {
   return (
-    <>
+    <div className="app">
       <Header />
 
       <Routes>
         <Route path="/" element={<HomePage />} />
+
         <Route path="/about" element={<AboutPage />} />
+
         <Route path="/login" element={<LoginPage />} />
+
         <Route
           path="/todos"
           element={
@@ -50,17 +53,19 @@ function App() {
             </RequireAuth>
           }
         />
+
         <Route
-  path="/profile"
-  element={
-    <RequireAuth>
-      <ProfilePage />
-    </RequireAuth>
-  }
-/>
-<Route path="*" element={<NotFoundPage />} />
+          path="/profile"
+          element={
+            <RequireAuth>
+              <ProfilePage />
+            </RequireAuth>
+          }
+        />
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
-    </>
+    </div>
   );
 }
 

@@ -15,17 +15,26 @@ export default function Header() {
   }
 
   return (
-    <header>
-      <h1>Todo List</h1>
+    <header className="header">
+      <div className="header-top">
+        <h1>Todo List</h1>
+
+        {isAuthenticated && (
+          <button
+            className="logout-btn"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        )}
+      </div>
 
       <Navigation />
 
-      {email && <p>Welcome, {email}</p>}
-
-      {isAuthenticated && (
-        <button onClick={handleLogout}>
-          Logout
-        </button>
+      {email && (
+        <p className="welcome-message">
+          Welcome, {email}
+        </p>
       )}
     </header>
   );
